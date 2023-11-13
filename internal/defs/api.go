@@ -127,6 +127,8 @@ type APIRTSPSession struct {
 	Transport     *string             `json:"transport"`
 	BytesReceived uint64              `json:"bytesReceived"`
 	BytesSent     uint64              `json:"bytesSent"`
+	Username      string              `json:"username"`
+	Password      string              `json:"password"`
 }
 
 // APIRTSPSessionList is a list of RTSP sessions.

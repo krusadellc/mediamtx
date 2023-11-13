@@ -14,6 +14,7 @@ import (
 	"github.com/bluenviron/gortsplib/v4"
 	"github.com/bluenviron/gortsplib/v4/pkg/auth"
 	"github.com/bluenviron/gortsplib/v4/pkg/base"
+	"github.com/bluenviron/gortsplib/v4/pkg/headers"
 	"github.com/bluenviron/gortsplib/v4/pkg/liberrors"
 	"github.com/google/uuid"
 
@@ -280,6 +281,13 @@ func (s *Server) OnAnnounce(ctx *gortsplib.ServerHandlerOnAnnounceCtx) (*base.Re
 func (s *Server) OnSetup(ctx *gortsplib.ServerHandlerOnSetupCtx) (*base.Response, *gortsplib.ServerStream, error) {
 	c := ctx.Conn.UserData().(*conn)
 	se := ctx.Session.UserData().(*session)
+	se.query = ctx.Query
+	var auth headers.Authorization
+	err := auth.Unmarshal(ctx.Request.Header["Authorization"])
+	if err == nil && auth.Method == headers.AuthMethodBasic {
+		se.username = auth.BasicUser
+		se.password = auth.BasicPass
+	}
 	return se.onSetup(c, ctx)
 }
 

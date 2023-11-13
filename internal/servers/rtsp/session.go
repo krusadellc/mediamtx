@@ -43,6 +43,8 @@ type session struct {
 	transport       *gortsplib.Transport
 	pathName        string
 	query           string
+	username        string
+	password        string
 	decodeErrLogger logger.Writer
 	writeErrLogger  logger.Writer
 }
